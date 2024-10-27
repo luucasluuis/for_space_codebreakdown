@@ -19,7 +19,7 @@ mixer.init()
 score = 0
 nivel = 1
 registrou = False   
-
+# to com fome
 # Clean code
 # PEP8
 # OOP 
