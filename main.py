@@ -59,7 +59,7 @@ def collisions():
                     break
                 invader.health_left -= 1
                 explosion_group.add(Explosion(invader.rect.center))
-                som_invader_morto.play()              
+                som_invader_morto.play()
 
     else:
         invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, True, True, pygame.sprite.collide_mask)
