@@ -1,0 +1,8 @@
+não colisão do player com os invaders
+quando pausa o hp do boss some
+não pontuação por matar o boss
+especial não atualiza os frames
+
+renomear
+transição entre os niveis
+atualização do nome high score bugado
