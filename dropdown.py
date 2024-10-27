@@ -3,7 +3,7 @@ from pygame.locals import *
 
 pygame.init()
 
-font_path = 'font\pixeled.ttf'
+font_path = '.\\font\\pixeled.ttf'
 font = pygame.font.Font(font_path, 12)
 WHITE = (255, 255, 255)
 GRAY = (200, 200, 200)

@@ -46,25 +46,38 @@ def collisions():
     '''
     função que será utilizada para TODAS as colisões que ocorrem no jogo
     '''
-    global score, lifes_left
-    if player_fire and (nivel % 10 == 0):
-        invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, False, True, pygame.sprite.collide_mask)
-        if invader_hitted:
-            for invader in invader_hitted:
-                if invader.health_left <= 1:
-                    explosion_group.add(Explosion(invader.rect.center))
-                    som_invader_morto.play()              
-                    invader.health_left -= 1
+    global score, lifes_left    # vasco
+    
+    if player_fire and (nivel % 10 == 0):   # Se o grupo do player_fire for
+                                            # falsy o programa nao mostrou o
+                                            # tiro do player.
+                                            # Alem disso, se o resto da divisao
+                                            # do booleano do nivel for igual a
+                                            # 0, o codigo resultara em true.  
+
+        boss_hitted = pygame.sprite.groupcollide(
+                        invader_group, player_fire,
+                        False, True, pygame.sprite.collide_mask
+                        )
+        # Se true (atingido) vai colidir.
+        if boss_hitted:  # se atingido
+
+            for boss in boss_hitted:
+                boss.health_left -= 1
+                
+                # Adicionar efeitos especiais
+                explosion_group.add(Explosion(boss.rect.center))
+                som_invader_morto.play()              
+                
+                if boss.health_left == 0:   # se hp menor/igual a que um
                     invader_group.empty()
                     break
-                invader.health_left -= 1
-                explosion_group.add(Explosion(invader.rect.center))
-                som_invader_morto.play()              
+                
 
     else:
         invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, True, True, pygame.sprite.collide_mask)
         if invader_hitted:
-            #invader_group.empty()
+            invader_group.empty()
             for invader in invader_hitted:
                 score += invader.reward
                 explosion_group.add(Explosion(invader.rect.center))
