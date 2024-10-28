@@ -19,7 +19,7 @@ mixer.init()
 score = 0
 nivel = 1
 registrou = False   
-
+# to com fome
 # Clean code
 # PEP8
 # OOP 
@@ -46,63 +46,96 @@ def collisions():
     '''
     função que será utilizada para TODAS as colisões que ocorrem no jogo
     '''
-    global score, lifes_left
-    if player_fire and (nivel % 10 == 0):
-        invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, False, True, pygame.sprite.collide_mask)
-        if invader_hitted:
-            for invader in invader_hitted:
-                if invader.health_left <= 1:
-                    explosion_group.add(Explosion(invader.rect.center))
-                    som_invader_morto.play()              
-                    invader.health_left -= 1
+    global score, lifes_left    # vasco
+    
+    if player_fire and (nivel % 10 == 0):   # Se o grupo do player_fire for
+                                            # falsy o programa nao mostrou o
+                                            # tiro do player.
+                                            # Alem disso, se o resto da divisao
+                                            # do booleano do nivel for igual a
+                                            # 0, o codigo resultara em true.  
+
+        boss_hitted = pygame.sprite.groupcollide(
+                        invader_group, player_fire,
+                        False, True, pygame.sprite.collide_mask
+                        )
+        # Se true (atingido) vai colidir.
+        if boss_hitted:  # se atingido
+
+            for boss in boss_hitted:
+                boss.health_left -= 1
+                
+                # Adicionar efeitos especiais
+                explosion_group.add(Explosion(boss.rect.center))
+                som_invader_morto.play()              
+                
+                if boss.health_left == 0:   # se hp menor/igual a que um
                     invader_group.empty()
                     break
-                invader.health_left -= 1
-                explosion_group.add(Explosion(invader.rect.center))
-                som_invader_morto.play()              
+                
 
     else:
-        invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, True, True, pygame.sprite.collide_mask)
-        if invader_hitted:
-            #invader_group.empty()
+        # --> Se invader for atingido, ele desaparece e o tiro também (true, true).
+        invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, True, True, pygame.sprite.collide_mask) 
+        
+        if invader_hitted: # --> Caso Invader atingido
+            #invader_group.empty() # Hack para matar todos com um tiro.
+            
+            # Loop para ir matando os invaders e dando pontos.
             for invader in invader_hitted:
                 score += invader.reward
                 explosion_group.add(Explosion(invader.rect.center))
             som_invader_morto.play()
 
+    # --> Se atingir o Invader Special, adiciona ponto e faz a explosão
     if pygame.sprite.groupcollide(player_fire, special_invader_group, True, True):
         explosion_group.add(Explosion(special_invader.rect.center))
         score += special_invader.reward
 
-    for sprite1 in player_fire:
-        for sprite2 in obstacle_group:
-            if pygame.sprite.collide_rect(sprite1, sprite2):
-                if pygame.sprite.collide_mask(sprite1, sprite2):
+
+    # Para cada tiro que atinge o obstaculo ele "mata" o tiro e o obstaculo, diminuindo o cooldown do tiro.
+    for fire in player_fire: 
+        for obstacle in obstacle_group: 
+            if pygame.sprite.collide_rect(fire, obstacle):
+                if pygame.sprite.collide_mask(fire, obstacle):
                     player.cooldown = 10
-                    sprite1.kill()
-                    sprite2.kill()
+                    fire.kill()
+                    obstacle.kill()
                     break
             
             else:
                 player.cooldown = 350   
 
     # pygame.sprite.groupcollide(obstacle_group, player_fire, True, True, pygame.sprite.collide_mask)
+    
+    # --> Quando o tiro do invader atinge o obstacle os dois somem. 
     pygame.sprite.groupcollide(obstacle_group, invader_fire, True, True)
 
+
+    # --> For para saber onde o tiro do Invader atinge
+
     for fire in invader_fire:
+        # --> Caso o tiro atinge o Player ele tira uma vida
         if pygame.sprite.spritecollide(fire, player_sprite, False, pygame.sprite.collide_mask):
             explosion_group.add(Explosion(fire.rect.center))
-            fire.kill()
+            fire.kill() # -> Tiro some
             som_ship_exp.play()
             lifes_left -= 1
 
+        # --> Se o tiro atinge outro tiro (do player no caso) os dois somem(True, fire.kill()).
         if pygame.sprite.spritecollide(fire, player_fire, True, pygame.sprite.collide_rect):
             explosion_group.add(Explosion(fire.rect.center))
             som_invader_morto.play()
             fire.kill()
 
-def update_and_draw():
-    global game_state
+
+
+def update_and_draw() -> None:
+    """ 
+    Função que atualiza a tela e desenha as sprites
+
+    """
+    global game_state 
     if game_state != 'transition':
         special_invader_group.update()
         special_invader_group.draw(display)
@@ -122,7 +155,7 @@ def update_and_draw():
 
         explosion_group.update()
         explosion_group.draw(display)
-        
+         
         obstacle_group.update()
         obstacle_group.draw(display)
         
