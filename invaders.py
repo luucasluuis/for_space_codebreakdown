@@ -19,14 +19,26 @@ def create_invaders(nivel):
     boss = Invaders(LARGURA_TELA // 2, ALTURA_TELA // 5, nivel)
     invader_group.add(boss)
 
-def check_invader_position():
+def check_invader_position() -> None:
+    '''
+        Checa a posição do invader
+        
+        Se qualquer um dos invaders encostarem nas bordas, altera sentido horizontal e desce 10
+        pixels em y se não for o boss
+    '''
+
+    # inicialmente False, mantendo a movimentação horizontal
     change_direction = False
     all_invaders = invader_group.sprites()
+    # checa se qualquer um dos invaders interagiu com a borda delimitada como "LARGURA_TELA" e
+    # invader.rect.left
     for invader in all_invaders:
         if invader.rect.right >= LARGURA_TELA or invader.rect.left <= 0:
             change_direction = True
             break
-
+    
+    # change_direction sendo True, altera o sentido de movimento e desce 10 pixels em y, caso o
+    # nivel atual não seja divisivel por 10 (boss)
     if change_direction:
         for invader in all_invaders:
             invader.direction *= -1
