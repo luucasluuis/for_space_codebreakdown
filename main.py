@@ -190,18 +190,26 @@ def pause_menu():
         exit()
 
 def reset_game():
+    '''
+    Reseta o jogo usando o escopo global.
+    '''
+    # O global e usado para setar os valores nas variaveis em um escopo global.
     global score, lifes_left, pause_screen, registrou, nivel, player
+    
+    # Vai restaurar para conf inicial se o jogo estiver em game over ou menu .
     if game_state in ('game_over', 'menu'):
         registrou = False
         score = 0
         lifes_left = 5
         nivel = 1
         pause_screen = False
+        
         obstacle_group.empty()
         create_obstacles()
 
         player_sprite.empty()
         player = create_player()
+
     # if obstacle_group:
     #     if nivel < 10:
     #         for obstacle in obstacle_group:
@@ -212,15 +220,12 @@ def reset_game():
     #                 obstacle.kill()
     #     else:
     #         obstacle_group.empty()
-    
  
-
+    # Reiniciando setup para o prox level.
     invader_fire.empty()
-    invader_group.empty()
+    invader_group.empty() 
     create_invaders(nivel)
-
     special_invader_group.empty()
-
     player_fire.empty()
 
 def options():
