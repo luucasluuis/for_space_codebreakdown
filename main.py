@@ -166,6 +166,7 @@ def update_and_draw() -> None:
         invader_fire.empty()
 
 def pause_menu():
+    # por que tem que desenhar no pause?
     invader_group.draw(display)
     player_sprite.draw(display)
     player_fire.draw(display)
@@ -439,7 +440,7 @@ while running:
                 game_state = 'credits'
 
         case 'scoreboard':
-            tocar_musica()
+            tocar_musica() # não precisa comentar a função tocar_musica()
             display.blit(score_board_background, (0, 0))
 
             with open('scoreboard.txt', 'r') as arquivo:  # Modo 'a' adiciona ao final do arquivo
@@ -498,7 +499,6 @@ while running:
                 display.blit(ingame_background, (0, 0))
                 display_score()
 
-                # Exibe as vidas do jogador.
                 for i in range(lifes_left):
                     display.blit(lifes_left_image, (coordinate_x_lifes - (i*40), 0))
 
@@ -510,29 +510,24 @@ while running:
                     collisions()
 
         case 'game_over':
-            # Pinta no fundo a tela de fim de jogo.
             display.blit(game_over_background, (0, 0))
 
-            # Reinicia as vidas do jogador.
-            # lifes_left = 5
+  
             if not registrou:
                 registrou = registrar_score()
-            # Verifica se o botão de jogar novamente foi pressionado
+
             if play_again_game_over_button.draw(display):
                 reset_game()
                 game_state = 'playing'
             
-            # Verifica se o botão de voltar para o menu foi pressionado
             elif back_to_menu_game_over_button.draw(display):
                 reset_game()
                 game_state = 'menu'
                 
-            # Verifica se o botão de mostrar o scoreboard foi pressionado
             elif scoreboard_game_over_button.draw(display):
                 reset_game()
                 game_state = 'scoreboard'
             
-            # # Verifica se o botão de sair do jogo foi pressionado
             elif exit_game_game_over_button.draw(display):
                 pygame.quit()
                 exit()

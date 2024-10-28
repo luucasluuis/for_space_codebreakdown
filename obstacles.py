@@ -11,7 +11,6 @@ def create_obstacles():
             for y in range(0, 60, 5):
                 if 463 + y >= 496 and 66 <= 33 + x <= 170:
                     continue
-                # Cria um novo obstáculo e adiciona ao grupo
                 obs = Obstacle(5, 342 * obstacle + 33 + x, 463 + y)
                 obstacle_group.add(obs)
 
