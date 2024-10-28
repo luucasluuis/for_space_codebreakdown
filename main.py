@@ -73,7 +73,6 @@ def collisions():
                     invader_group.empty()
                     break
                 
-
     else:
         # --> Se invader for atingido, ele desaparece e o tiro também (true, true).
         invader_hitted = pygame.sprite.groupcollide(invader_group, player_fire, True, True, pygame.sprite.collide_mask) 
@@ -102,7 +101,7 @@ def collisions():
                     fire.kill()
                     obstacle.kill()
                     break
-            
+
             else:
                 player.cooldown = 350   
 
@@ -413,8 +412,7 @@ while running:
             text_rect.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
             
             display.blit(text_surface, text_rect)
-
-            
+    
         case 'menu':
             reset_game()
             tocar_musica()
