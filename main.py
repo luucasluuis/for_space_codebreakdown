@@ -283,6 +283,7 @@ def registrar_score():
     return True
 
 def show_names_scores(lista_argumentos, numero_argumentos):
+   
     names = [] # Armazena os nomes.
     scores = [] # Armazena os pontos.
     
@@ -330,15 +331,19 @@ pause_screen = False
 
 mixer.music.play(-1)
 
+# Jogo rodando em loop
 while running:
 
+    # limita a taxa de atualização da tela
     clock.tick(fps)
+
     # fundo com a cor da for_code
     display.fill("#1E1647")
+    
     # enquanto o jogo esta rodando procuramos por eventos
-
     eventos = pygame.event.get()
 
+    # for para tratar os eventos
     for event in eventos:
         
         # pygame.QUIT event significa que o usuario fechou a janela no X
@@ -349,7 +354,8 @@ while running:
         # logica username
         if event.type == pygame.KEYDOWN and game_state == 'player_identify':
             start_typing = True
-            # digitar na tela
+            
+            # digitar e apagar o texto
             if event.key == pygame.K_BACKSPACE:
                 user_text = user_text[:-1]
             else:
@@ -359,8 +365,9 @@ while running:
             if event.key == pygame.K_RETURN:
                 game_state = 'menu'
         
-        
+        #  se o jogo estiver rodando
         if game_state == 'playing':
+
             # esc in-game pausa o jogo e so despausa ao apertar esc novamente
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and not pause_screen:
                 print("pause")
@@ -370,48 +377,58 @@ while running:
                 print("saindo do pause")
                 pause_screen = False
                 
-            # increase fire rate test
+            # caso aperte 0, o cooldown do player é reduzido
             if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and game_state == 'playing':
                 player.cooldown = 100
 
+            # cria invaders
             if event.type == INVADERFIRE and not pause_screen:
                 invaders_fire(-(8+nivel))
 
+            # cria special invader  
             if event.type == SPECIALINVADER and not special_invader_group:
                 special_invader = SpecialInvader()
                 special_invader_group.add(special_invader)
 
+    # Match para saber em que estado o jogo se encontra
     match game_state:
+
+        # caso o estado seja player_identify (digitar o nome do jogador)
         case 'player_identify':
-            display.fill("#1E1647")
+            display.fill("#1E1647") # fundo com a cor da for_code
             
-            # blit digite seu nome
+            # cria a instrução para o jogador digitar seu nome
             instruction_surface = pygame.font.Font(join('font', 'pixeled.ttf'), 25).render('DIGITE SEU USERNAME:', True, '#FFFF00')
             instruction_rect = instruction_surface.get_rect()
             instruction_rect.center = (LARGURA_TELA // 2, 80)
             
-            display.blit(instruction_surface, instruction_rect)
+            display.blit(instruction_surface, instruction_rect) # desenha a instrução na tela
             
-            if start_typing:
+            # se o jogador começou a digitar, mostre a instrução para apertar 'ENTER' para entrar no jogo
+            if start_typing: 
                 enter_name_surface = font.render('APERTE \'ENTER\' PARA ENTRAR NO JOGO', True, WHITE)
                 enter_name_rect = enter_name_surface.get_rect()
                 enter_name_rect.center = (LARGURA_TELA // 2, ALTURA_TELA - 30)
                 
-                # Atualize o tempo de piscar
+                # efeito de piscar o texto
                 blink_time += clock.get_time()
+                
                 if blink_time >= 500:  # Alterna a cada 500ms (0.5 segundos)
-                    show_text = not show_text
+                    show_text = not show_text 
                     blink_time = 0
-                    
-                if show_text:
+
+
+                if show_text: # se show_text for True, mostre o texto
                     display.blit(enter_name_surface, enter_name_rect)
             
+            # cria a surface com o texto digitado pelo jogador
             text_surface = font.render(user_text, True, WHITE)
             
-            # retangulo para centralizar o texto na tela
+            # cria um retângulo para centralizar o texto na tela
             text_rect = text_surface.get_rect()
             text_rect.center = (LARGURA_TELA // 2, ALTURA_TELA // 2)
             
+            # desenha o texto na tela
             display.blit(text_surface, text_rect)
     
         case 'menu':
