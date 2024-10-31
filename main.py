@@ -166,7 +166,16 @@ def update_and_draw() -> None:
         invader_fire.empty()
 
 def pause_menu():
-    # por que tem que desenhar no pause?
+    '''
+    Menu de pausa\n
+    Serve para pausar o jogo.\n
+    Se 'esc' key for pressionada, inicia a açao de pausa da funçao. O que
+    permite o jogador a ter acesso a funcionalidades do jogo.
+    Alem de desenhar e congelar o posicionamento dos sprites na tela para a
+    visualizaçao do jogador.
+    '''
+    
+    # Usado para mostrar os sprites e o seu posicionamento na tela de pause.
     invader_group.draw(display)
     player_sprite.draw(display)
     player_fire.draw(display)
@@ -175,22 +184,31 @@ def pause_menu():
     explosion_group.draw(display)
     obstacle_group.draw(display)
     
+
+    # Se botao de 'Play' for mostrado.
     if ps_play_button.draw(display):
-        global pause_screen
-        pause_screen = False
+        global pause_screen # A variavel sera valida para todo o programa.
+        pause_screen = False # Enquanto 'false', o jogo estara pausado.
+
+    # Se botao de 'Options' for mostrado.
     if ps_options.draw(display):
         global game_state
         game_state = 'ps_options'
+
+    # Se botao de 'Back to menu' for mostrado
     if ps_back_to_menu_button.draw(display):
         global nivel
-        reset_game()
+        reset_game() # Reseta o jogo
         game_state = 'menu'
+
+    # Se botao de 'Exit game' for mostrado
     if ps_exit_game.draw(display):
         pygame.quit()
-        exit()
+        exit()  # Sai do jogo
 
 def reset_game():
     '''
+    Reinicia o jogo.\n
     Reseta o jogo usando o escopo global.
     '''
     # O global e usado para setar os valores nas variaveis em um escopo global.
