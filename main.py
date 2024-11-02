@@ -69,7 +69,7 @@ def collisions():
                 explosion_group.add(Explosion(boss.rect.center))
                 som_invader_morto.play()              
                 
-                if boss.health_left == 0:   # se hp menor/igual a que um
+                if boss.health_left == 0:   # se hp menor/igual que um
                     invader_group.empty()
                     break
                 
@@ -511,38 +511,42 @@ while running:
             if back_to_menu_button.draw(display):
                 game_state = 'menu'
 
-        case 'playing':
-            if not invader_group:
-                nivel += 1
-                lifes_left += 1 if lifes_left < 5 else 0
-                display.blit(ingame_background, (0, 0))
-                display_level_atual(nivel)
-                game_state = 'transition'
-                update_and_draw()
-                display_score()
-                pygame.display.update()
+        case 'playing': 
+            if not invader_group: # excluso o invader group:
+                nivel += 1 # ao menos no nível 1
+                lifes_left += 1 if lifes_left < 5 else 0 # pelo menos 1 de hp
+
+                display.blit(ingame_background, (0, 0)) # mostra background padrão do jogo
+                display_level_atual(nivel) # mostra o nível atual
+
+                game_state = 'transition' # quando em transição
+                update_and_draw() # atualiza sprites e sua localização 
+                display_score() # mostra score
+                pygame.display.update() # atualiza "tela"
                 
-                pygame.time.delay(1500)
-                game_state = 'playing'
-                reset_game()
+                pygame.time.delay(1500) # configura o delay padrão do jogo quando jogando
+                game_state = 'playing' 
+                reset_game() # atualiza jogo 
                 
-            pygame.mixer_music.stop()
-            if lifes_left <= 0:
-                game_state = 'game_over'
-                som_gover.play()
+            pygame.mixer_music.stop() # para a música
+
+            if lifes_left <= 0: # caso o hp seja 0
+                game_state = 'game_over' # vai para game over
+                som_gover.play() # música do game over toca
             else:
-                display.blit(ingame_background, (0, 0))
-                display_score()
+                display.blit(ingame_background, (0, 0)) # volta para background padrão
+                display_score() # mostra o score obtido
 
-                for i in range(lifes_left):
-                    display.blit(lifes_left_image, (coordinate_x_lifes - (i*40), 0))
+                for i in range(lifes_left): # sobre valores de hp
+                    display.blit(lifes_left_image, (coordinate_x_lifes - (i*40), 0)) 
+                    # mostra hp restante em localização específica
 
-                if pause_screen:
-                    pause_menu()
+                if pause_screen: # caso pause
+                    pause_menu() # mostrar menu da pausa
                 else:
-                    update_and_draw()
-                    check_invader_position()
-                    collisions()
+                    update_and_draw() # atualiza sprites e sua localização 
+                    check_invader_position() # volta a posição dos invaders
+                    collisions() # volta possíveis colisões
 
         case 'game_over':
             display.blit(game_over_background, (0, 0))
