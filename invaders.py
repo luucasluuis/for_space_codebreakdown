@@ -45,10 +45,18 @@ def check_invader_position() -> None:
             if invader.nivel % 10 != 0:
                 invader.rect.y += 10
 
+'''
+Definindo o sprite dos invaders:
+Caso o grupo ataque, um invader
+aleatório originará o sprite. 
+Os efeitos desse sprite são
+definidos na variável "fire".
+
+'''
 def invaders_fire(attack_speed):
-    if invader_group.sprites():
-        random_invader = random.choice(invader_group.sprites())
-        fire = Fire(random_invader.rect.center, attack_speed, invader_fire)
+    if invader_group.sprites(): 
+        random_invader = random.choice(invader_group.sprites()) 
+        fire = Fire(random_invader.rect.center, attack_speed, invader_fire) 
         invader_fire.add(fire)
 
 class Invaders(pygame.sprite.Sprite):
