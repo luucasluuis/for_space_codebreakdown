@@ -34,11 +34,10 @@ def check_invader_position() -> None:
 
 def invaders_fire(attack_speed):
     '''
-    Definindo o sprite dos invaders:
-    Caso o grupo ataque, um invader
-    aleatório originará o sprite. 
-    Os efeitos desse sprite são
-    definidos na variável "fire".
+    Definindo o sprite do tiro dos invaders:\n
+    Caso o evento de tiro seja triggered, um invader
+    aleatório será selecionado para originar o ataque,
+    criando uma classe Fire e adicionando a grupo invader_fire
     '''
     if invader_group.sprites(): 
         random_invader = random.choice(invader_group.sprites()) 

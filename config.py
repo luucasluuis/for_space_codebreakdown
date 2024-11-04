@@ -55,7 +55,7 @@ mixer.music.load(join('audios', 'menu.wav'))
 som_invader_morto = mixer.Sound(join('audios', 'sounds_invaderkilled.wav'))
 som_ship_exp = mixer.Sound(join('audios', 'sounds_shipexplosion.wav'))
 som_shoot = mixer.Sound(join('audios', 'sounds_shoot.wav'))
-som_gover = mixer.Sound(join('audios', 'game_over.wav'))
+som_game_over = mixer.Sound(join('audios', 'game_over.wav'))
 
 mixer.music.set_volume(0.05)
 som_invader_morto.set_volume(0.05)

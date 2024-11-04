@@ -579,7 +579,7 @@ if __name__ == '__main__':
 
                 if game.lifes_left <= 0: # caso o hp seja 0
                     game.game_state = 'game_over' # vai para game over
-                    som_gover.play() # música do game over toca
+                    som_game_over.play() # música do game over toca
                 else:
                     display.blit(ingame_background, (0, 0)) # volta para background padrão
                     game.display_score() # mostra o score obtido

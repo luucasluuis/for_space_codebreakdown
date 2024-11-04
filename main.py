@@ -191,27 +191,22 @@ class Game:
         explosion_group.draw(display)
         obstacle_group.draw(display)
         
-
-        # Se botao de 'Play' for mostrado.
+        # Desenha e espera que o botão seja pressionado, retorna bool
         if ps_play_button.draw(display):
-            global pause_screen # A variavel sera valida para todo o programa.
-            pause_screen = False # Enquanto 'false', o jogo estara pausado.
+            # seta pause_screen pra false pra garantir que o jogo pare
+            self.pause_screen = False 
 
-        # Se botao de 'Options' for mostrado.
         if ps_options.draw(display):
-            global game_state
-            game_state = 'ps_options'
+            # garantir que acesse a funcionalidade de options
+            self.game_state = 'ps_options'
 
-        # Se botao de 'Back to menu' for mostrado
         if ps_back_to_menu_button.draw(display):
-            global nivel
             self.reset_game() # Reseta o jogo
-            game_state = 'menu'
+            self.game_state = 'menu'
 
-        # Se botao de 'Exit game' for mostrado
         if ps_exit_game.draw(display):
-            pygame.quit()
-            exit()  # Sai do jogo
+            pygame.quit() # fecha o jogo
+            exit()  # finaliza o código
 
     def reset_game(self):
         '''
@@ -337,7 +332,7 @@ class Game:
                 display.blit(names_surface, names_rect)
 
     def create_invaders(self, nivel):
-
+    
         max_cols = 12
         max_rows = 6
         current_n_of_cols = cols + self.nivel
@@ -356,10 +351,10 @@ class Game:
         """
         Cria os obstáculos e os adiciona ao grupo de sprites
         """
-        
         for obstacle in range(4):   # Delimita a quantidade de obstaculos
             
-            # Dimensionaliza o tamanho do obstaculo
+            # Dimensionaliza o tamanho do obstaculo, baseando-se nas coordenadas
+            # passadas como start, stop e step
             for x in range(0, 180, 5):
                 for y in range(0, 60, 5):
 
@@ -367,32 +362,35 @@ class Game:
                     if 463 + y >= 496 and 66 <= 33 + x <= 170:
                         continue
                     
-                    # Desloca o posicionamento da estrutura
+                    # Desloca o posicionamento da estrutura e 
+                    # define um espaçamento entre eles e as bordas
                     coordenate_x = 342 * obstacle + 33 + x
                     coordenate_y = 463 + y
 
-                    # Determina a opacidade dos pixels do obstaculo                
-                    OpacityControl = 5
+                    # Determina o tamanho dos pixels do obstaculo                
+                    each_obstacle_size = 5
 
-                    # Cria e adiciona o obstaculo
-                    obs = Obstacle(OpacityControl, coordenate_x, coordenate_y)
+                    # Cria e adiciona o obstaculo ao grupo de sprites
+                    obs = Obstacle(each_obstacle_size, coordenate_x, coordenate_y)
                     obstacle_group.add(obs)
 
     def create_player(self):
         '''
         Criar jogador.\n
-        Funçao usada para estabelecer altura e largura do jogador. 
+        Funçao usada para estabelecer altura e largura que o
+        jogador será disposto na tela 
         '''
         return Player((ALTURA_TELA-80, LARGURA_TELA / 2), player_sprite)
 
 if __name__ == '__main__':
     game = Game()
+
     #Obstacle
     game.create_obstacles()
 
     #Invaders
     game.create_invaders(game.nivel)
-
+    
     #Player
     player = game.create_player()
 
@@ -558,32 +556,38 @@ if __name__ == '__main__':
                     game.game_state = 'menu'
 
             case 'playing': 
-                if not invader_group: # excluso o invader group:
-                    game.nivel += 1 # ao menos no nível 1
-                    game.lifes_left += 1 if game.lifes_left < 5 else 0 # pelo menos 1 de hp
-
-                    display.blit(ingame_background, (0, 0)) # mostra background padrão do jogo
-                    game.display_level_atual(game.nivel) # mostra o nível atual
-
-                    game.game_state = 'transition' # quando em transição
+                # se o grupo invader estiver vazio, passa o nivel
+                if not invader_group:
+                    # aumenta o nivel em 1
+                    game.nivel += 1
+                    # 1 de hp no caso o hp for menor que 5 
+                    game.lifes_left += 1 if game.lifes_left < 5 else 0 
+                    # mostra background padrão do jogo
+                    display.blit(ingame_background, (0, 0))
+                     # mostra o nível atual
+                    game.display_level_atual(game.nivel)
+                    # muda o game_state para "transition"
+                    game.game_state = 'transition'
                     game.update_and_draw() # atualiza sprites e sua localização 
                     game.display_score() # mostra score
                     pygame.display.update() # atualiza "tela"
-                    
-                    pygame.time.delay(1500) # configura o delay padrão do jogo quando jogando
+                
+                    # tempo de transição entre os niveis
+                    pygame.time.delay(1500) 
+                    # retorna game_state para playing
                     game.game_state = 'playing' 
-                    game.reset_game() # atualiza jogo 
+                    game.reset_game() # atualiza jogo
                     
                 pygame.mixer_music.stop() # para a música
 
-                if game.lifes_left <= 0: # caso o hp seja 0
+                if game.lifes_left <= 0: # caso o hp seja menor ou igual a 0
                     game.game_state = 'game_over' # vai para game over
-                    som_gover.play() # música do game over toca
+                    som_game_over.play() # música do game over toca
                 else:
                     display.blit(ingame_background, (0, 0)) # volta para background padrão
-                    game.display_score() # mostra o score obtido
+                    game.display_score() # mostra o score atual
 
-                    for i in range(game.lifes_left): # sobre valores de hp
+                    for i in range(game.lifes_left): # sobre as imagens de hp
                         display.blit(lifes_left_image, (coordinate_x_lifes - (i*40), 0)) 
                         # mostra hp restante em localização específica
 
@@ -591,8 +595,8 @@ if __name__ == '__main__':
                         game.pause_menu() # mostrar menu da pausa
                     else:
                         game.update_and_draw() # atualiza sprites e sua localização 
-                        check_invader_position() # volta a posição dos invaders
-                        game.collisions() # volta possíveis colisões
+                        check_invader_position() # verifica a posição dos invaders
+                        game.collisions() # verifica possíveis colisões
 
             case 'game_over':
                 display.blit(game_over_background, (0, 0))
