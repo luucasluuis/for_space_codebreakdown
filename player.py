@@ -4,13 +4,6 @@ from utils import surface_load
 from pygame.sprite import Sprite
 from config import *
 from fire import Fire
-
-def create_player():
-  '''
-  Criar jogador.\n
-  Funçao usada para estabelecer altura e largura do jogador. 
-  '''
-  return Player((ALTURA_TELA-80, LARGURA_TELA / 2), player_sprite)
   
 class Player(Sprite):
   def __init__(self, pos, groups):

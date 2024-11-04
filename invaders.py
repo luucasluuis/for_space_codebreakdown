@@ -4,20 +4,6 @@ from config import *
 from os.path import join
 from fire import Fire
 
-def create_invaders(nivel):
-    max_cols = 12
-    max_rows = 6
-    current_n_of_cols = cols + nivel
-    current_n_of_rows = rows + nivel // 3
-
-    if nivel % 10 != 0:
-        for row in range(current_n_of_rows if current_n_of_rows < max_rows else max_rows):
-            for item in range(current_n_of_cols if current_n_of_cols < max_cols else max_cols):
-                invader = Invaders(100 + item * 65, 100 + row * 70, nivel)
-                invader_group.add(invader)
-        return
-    boss = Invaders(LARGURA_TELA // 2, ALTURA_TELA // 5, nivel)
-    invader_group.add(boss)
 
 def check_invader_position() -> None:
     '''
@@ -45,15 +31,15 @@ def check_invader_position() -> None:
             if invader.nivel % 10 != 0:
                 invader.rect.y += 10
 
-'''
-Definindo o sprite dos invaders:
-Caso o grupo ataque, um invader
-aleatório originará o sprite. 
-Os efeitos desse sprite são
-definidos na variável "fire".
 
-'''
 def invaders_fire(attack_speed):
+    '''
+    Definindo o sprite dos invaders:
+    Caso o grupo ataque, um invader
+    aleatório originará o sprite. 
+    Os efeitos desse sprite são
+    definidos na variável "fire".
+    '''
     if invader_group.sprites(): 
         random_invader = random.choice(invader_group.sprites()) 
         fire = Fire(random_invader.rect.center, attack_speed, invader_fire) 
