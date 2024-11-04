@@ -30,14 +30,26 @@ dropdown.index_selecionado = 1
 # Inicializa uma font para posteriormente ser utilizada como surface
 font = pygame.font.Font(join('font', 'pixeled.ttf'), 16)
 
-def display_score():
-    score_surface = font.render(f'Score: {score}', False, 'white')
-    score_rect = score_surface.get_rect(topleft = (10, -10))
+#exibir a pontuação atual
+def display_score():   
+    # criando uma superficiede que contem o texto da pontuação
+    # cria na tela o texto - score: valor da potnuação
+    # o texto tem coloração branco
+    score_surface = font.render(f'Score: {score}', False, 'white')  
+    #define a posição do texto na tela, sendo ela no canto superior esquerdo
+    score_rect = score_surface.get_rect(topleft = (10, -10))    
+    #Exibe a superficie criada na tela na tal posição
     display.blit(score_surface, score_rect)
 
-def display_level_atual(nivel):
+#exibir o nível atual do jogo na tela
+def display_level_atual(nivel): 
+    # criando uma superficiede que contem o texto do nivel atual
+    # cria na tela o texto - Level: nivel atual
+    # o texto tem coloração branco
     level_surface = font.render(f'Level: {nivel}', False, 'white')
+    # define a posição do texto na tela, sendo ela no centro
     level_rect = level_surface.get_rect(center=(LARGURA_TELA/2, ALTURA_TELA/2))
+    # #Exibe a superficie criada na tela na tal posição
     display.blit(level_surface, level_rect)
 
 def collisions():
